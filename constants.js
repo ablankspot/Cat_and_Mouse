@@ -1,3 +1,14 @@
+/////////////////////////////////////////
+// 
+// FILE: contants.js
+// 
+// This file constains the declaration of
+// all the values considered as constants
+// in the game. By conventions, this are 
+// named in upper case letters only
+//
+/////////////////////////////////////////
+
 // Constants for key mapping
 var K_A = 65;
 var K_S = 83;
