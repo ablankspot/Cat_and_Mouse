@@ -1,3 +1,17 @@
+/////////////////////////////////////////
+// 
+// FILE: game.js
+// 
+// This file constains all the logic
+// governing the game. Including draw events,
+// navigation between screens, and in-game
+// movement and drawing. It uses thinker.js
+// for AI.
+//
+// Author:      Canek Cambray [ablankspot]
+// Modified:    02/05/2016
+/////////////////////////////////////////
+
 // Canvas variables
 var canvas;
 var canvas_w;
