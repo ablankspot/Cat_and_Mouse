@@ -4,9 +4,11 @@
 // 
 // This file constains the declaration of
 // all the values considered as constants
-// in the game. By conventions, this are 
-// named in upper case letters only
+// in the game. By convention, this are 
+// named in upper case letters only.
 //
+// Author:      Canek Cambray [ablankspot]
+// Modified:    02/05/2016
 /////////////////////////////////////////
 
 // Constants for key mapping
@@ -29,6 +31,7 @@ var NONE = -1;
 // Screens constants
 var START_SCREEN = 0;
 var HIGH_SCORE_SCREEN = 1;
+var DIFFICULTY_SELECTION_SCREEN = 2;
 
 // Linear distance between two points
 // TODO: Move to another file if enough auxiliar
