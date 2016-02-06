@@ -7,6 +7,7 @@ var currentGameScreen;
 // Controls if we are on the 
 // game screen.
 var isGameRunning;
+var isGamePaused;
 
 // ---------------------------
 // Drawing Functions
@@ -17,6 +18,7 @@ function Clear()
     {
         var ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas_w, canvas_h);
+        window.removeEventListener('mousedown', Button_Click);
     }
 }
 
@@ -99,7 +101,7 @@ function DrawStart()
 
         //window.onkeydown = KeyStrokeDown;
         //window.onkeyup = KeyStrokeUp;
-        //window.addEventListener("mousedown", Click, false);
+        window.addEventListener("mousedown", Button_Click, false);
     }
 }
 
@@ -140,7 +142,63 @@ function Adjust_Content()
     }
 }
 
+function Button_Click(e)
+{
+    if (canvas != null)
+    {
+        var w = (canvas_w / 2);
+        var h = (canvas_h / 2);
+        var button_w = Math.ceil((w / 10) * 8);
+        var button_h = Math.ceil((h / 10) * 5);
 
+        var buttonCoordinates = 
+        {
+            Play_x0: Math.ceil(w / 10),
+            Play_x1: Math.ceil(w / 10) + button_w,
+            Play_y0: Math.ceil((h / 10) * 2.5) + h,
+            Play_y1: Math.ceil((h / 10) * 2.5) + h + button_h,
+            High_x0: Math.ceil(w / 10) + w,
+            High_x1: Math.ceil(w / 10) + w + button_w,
+            High_y0: Math.ceil((h / 10) * 2.5) + h,
+            High_y1: Math.ceil((h / 10) * 2.5) + h + button_h
+        };
+
+        var x = e.pageX - canvas.offsetLeft;
+        var y = e.pageY - canvas.offsetTop;
+
+        // Navigate through different screens
+        if (!isGameRunning)
+        {
+            // Hit button Play on start screen
+            if (currentGameScreen == START_SCREEN &&
+               (x >= buttonCoordinates.Play_x0 && x <= buttonCoordinates.Play_x1 && 
+                y >= buttonCoordinates.Play_y0 && y <= buttonCoordinates.Play_y1))
+            {
+                // window.removeEventListener('mousedown', Click);
+                // IsGameRunning = true;
+                // Clear();
+                // Start();
+                alert('Hitted button Play');
+            }
+            else if (currentGameScreen == START_SCREEN &&
+                    (x >= buttonCoordinates.High_x0 && x <= buttonCoordinates.High_x1 && 
+                     y >= buttonCoordinates.High_y0 && y <= buttonCoordinates.High_y1))
+            {
+                alert('Hitted button Scores');
+            }
+        }
+        else
+        {   
+            // If there is a button click when the game is running
+            // there are only 2 alternatives: The game is paused
+            // or the game is over.
+            if (isGamePaused)
+            {}
+            else
+            {}
+        }
+    }
+}
 
 // ===========================
 
@@ -151,6 +209,7 @@ function Init()
     
     // Set initial state variables
     isGameRunning = false;
+    isGamePaused = false;
     currentGameScreen = START_SCREEN;
 
     // Adjust size of the game's canvas
