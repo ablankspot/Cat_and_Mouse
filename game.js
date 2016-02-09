@@ -156,6 +156,8 @@ function Adjust_Content()
     }
 }
 
+// Reads the input and fires the event depending on the 
+// button clicked.
 function Button_Click(e)
 {
     if (canvas != null)
