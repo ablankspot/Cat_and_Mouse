@@ -122,13 +122,16 @@ function DrawStart()
 // Adjusts the size of the canvas to the size of the browser
 function Resize()
 {
-    // The canvas will mesure 90% of the screen in both directions
-    // TODO: verify that the size accounts at least for site header
-    canvas_w = Math.ceil((window.innerWidth / 10) * 9);
-    canvas_h = Math.ceil((window.innerHeight / 10) * 9);
+    if (canvas != null)
+    {
+        // The canvas will mesure 90% of the screen in both directions
+        // TODO: verify that the size accounts at least for site header
+        canvas_w = Math.ceil((window.innerWidth / 10) * 9);
+        canvas_h = Math.ceil((window.innerHeight / 10) * 9);
 
-    canvas.width = canvas_w;
-    canvas.height = canvas_h;
+        canvas.width = canvas_w;
+        canvas.height = canvas_h;
+    }
 }
 // ===========================
 
@@ -156,9 +159,10 @@ function Adjust_Content()
     }
 }
 
-// Reads the input and fires the event depending on the 
-// button clicked.
-function Button_Click(e)
+// Helper function to calculate which button was pressed based 
+// on current screen and coordinates of the click event.
+
+function ButtonPressed(x, y)
 {
     if (canvas != null)
     {
@@ -167,42 +171,34 @@ function Button_Click(e)
         var button_w = Math.ceil((w / 10) * 8);
         var button_h = Math.ceil((h / 10) * 5);
 
-        var buttonCoordinates = 
-        {
-            Play_x0: Math.ceil(w / 10),
-            Play_x1: Math.ceil(w / 10) + button_w,
-            Play_y0: Math.ceil((h / 10) * 2.5) + h,
-            Play_y1: Math.ceil((h / 10) * 2.5) + h + button_h,
-            High_x0: Math.ceil(w / 10) + w,
-            High_x1: Math.ceil(w / 10) + w + button_w,
-            High_y0: Math.ceil((h / 10) * 2.5) + h,
-            High_y1: Math.ceil((h / 10) * 2.5) + h + button_h
-        };
+        // Coordinates of Play button on the start 
+        var Play_x0 = Math.ceil(w / 10);
+        var Play_x1 = Math.ceil(w / 10) + button_w;
+        var Play_y0 = Math.ceil((h / 10) * 2.5) + h;
+        var Play_y1 = Math.ceil((h / 10) * 2.5) + h + button_h;
+        var High_x0 = Math.ceil(w / 10) + w;
+        var High_x1 = Math.ceil(w / 10) + w + button_w;
+        var High_y0 = Math.ceil((h / 10) * 2.5) + h;
+        var High_y1 = Math.ceil((h / 10) * 2.5) + h + button_h;
 
-        var x = e.pageX - canvas.offsetLeft;
-        var y = e.pageY - canvas.offsetTop;
-
-        // Navigate through different screens
+         // Navigate through different screens
         if (!isGameRunning)
         {
             // Hit button Play on start screen
             if (currentGameScreen == START_SCREEN &&
-               (x >= buttonCoordinates.Play_x0 && x <= buttonCoordinates.Play_x1 && 
-                y >= buttonCoordinates.Play_y0 && y <= buttonCoordinates.Play_y1))
+               (x >= Play_x0 && x <= Play_x1 && 
+                y >= Play_y0 && y <= Play_y1))
             {
-                // window.removeEventListener('mousedown', Click);
-                // IsGameRunning = true;
-                // Clear();
-                // Start();
-                alert('Hitted button Play');
+                return BUTTON_PLAY;
             }
             else if (currentGameScreen == START_SCREEN &&
-                    (x >= buttonCoordinates.High_x0 && x <= buttonCoordinates.High_x1 && 
-                     y >= buttonCoordinates.High_y0 && y <= buttonCoordinates.High_y1))
+                    (x >= High_x0 && x <= High_x1 && 
+                     y >= High_y0 && y <= High_y1))
             {
-                alert('Hitted button Scores');
+                return BUTTON_HIGH_SCORE;
             }
         }
+        /*
         else
         {   
             // If there is a button click when the game is running
@@ -212,6 +208,32 @@ function Button_Click(e)
             {}
             else
             {}
+        }
+        */
+    }
+}
+
+// Reads the input and fires the event depending on the 
+// button clicked.
+function Button_Click(e)
+{
+    if (canvas != null)
+    {
+        var x = e.pageX - canvas.offsetLeft;
+        var y = e.pageY - canvas.offsetTop;
+
+        switch(ButtonPressed(x, y))
+        {
+            case BUTTON_PLAY:
+                // window.removeEventListener('mousedown', Click);
+                // IsGameRunning = true;
+                // Clear();
+                // Start();
+                alert('Hitted button Play');
+                break;
+            case BUTTON_HIGH_SCORE:
+                alert('Hitted button Scores');
+                break;
         }
     }
 }

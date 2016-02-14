@@ -33,6 +33,11 @@ var START_SCREEN = 0;
 var HIGH_SCORE_SCREEN = 1;
 var DIFFICULTY_SELECTION_SCREEN = 2;
 
+// Button Constants
+var BUTTON_PLAY = 0;
+var BUTTON_HIGH_SCORE = 1;
+var BUTTON_DIFFICULTY_EASY = 2;
+
 // Linear distance between two points
 // TODO: Move to another file if enough auxiliar
 //       functions
