@@ -32,13 +32,11 @@ function Clear()
     {
         var ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas_w, canvas_h);
-        window.removeEventListener('mousedown', Button_Click);
+        window.removeEventListener('mousedown', ButtonClick);
     }
 }
 
-
-// Draws the start menu of the game
-function DrawStart()
+function DrawBackground()
 {
     if (canvas != null)
     {
@@ -57,6 +55,19 @@ function DrawStart()
         ctx.stroke();
         ctx.fill();
         ctx.closePath();
+    }
+}
+
+function DrawLogo()
+{
+    if (canvas != null)
+    {
+        var ctx = canvas.getContext("2d");
+        var w = (canvas_w / 2);
+        var h = (canvas_h / 2);
+        var button_w = Math.ceil((w / 10) * 8);
+        var button_h = Math.ceil((h / 10) * 5);
+        var x_0, y_0;
 
         // Draw the Logo placeholder
         ctx.globalAlpha = 0.3;
@@ -73,7 +84,24 @@ function DrawStart()
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
         ctx.fillText("LOGO", w, h / 2);
-        ctx.closePath();       
+        ctx.closePath();
+    }
+}
+
+// Draws the start menu of the game
+function DrawStart()
+{
+    if (canvas != null)
+    {
+        var ctx = canvas.getContext("2d");
+        var w = (canvas_w / 2);
+        var h = (canvas_h / 2);
+        var button_w = Math.ceil((w / 10) * 8);
+        var button_h = Math.ceil((h / 10) * 5);
+        var x_0, y_0;
+
+        DrawBackground();
+        DrawLogo();
 
         // Draw the 'Play' button placeholder
         x_0 = Math.ceil(w / 10);
@@ -115,7 +143,63 @@ function DrawStart()
 
         //window.onkeydown = KeyStrokeDown;
         //window.onkeyup = KeyStrokeUp;
-        window.addEventListener("mousedown", Button_Click, false);
+        window.addEventListener("mousedown", ButtonClick, false);
+    }
+}
+
+function DrawDifficultySelection()
+{
+    if (canvas != null)
+    {
+        var ctx = canvas.getContext("2d");
+        var w = (canvas_w / 2);
+        var h = (canvas_h / 2);
+        var button_w = Math.ceil((w / 10) * 8);
+        var button_h = Math.ceil((h / 10) * 5);
+        var x_0, y_0;
+
+        DrawBackground();
+        DrawLogo();
+
+        // Draw the 'Easy' button placeholder
+        x_0 = Math.ceil(w / 10);
+        y_0 = Math.ceil((h / 10) * 2.5) + h;
+        ctx.beginPath();
+        ctx.rect(x_0, y_0, button_w, button_h);
+        ctx.fillStyle="#ffffff";
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+
+        x_0 = (x_0 + button_w) - (button_w / 2);
+        y_0 = y_0 + (button_h / 2);
+        ctx.beginPath();
+        ctx.font = "80px Poiret One";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText("Easy", x_0, y_0);
+        ctx.closePath();
+
+        // Draw the 'Hard' button placeholder
+        x_0 = Math.ceil(w / 10) + w;
+        y_0 = Math.ceil((h / 10) * 2.5) + h;
+        ctx.beginPath();
+        ctx.rect(x_0, y_0, button_w, button_h);
+        ctx.fillStyle="#ffffff";
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+
+        x_0 = (x_0 + button_w) - (button_w / 2);
+        y_0 = y_0 + (button_h / 2);
+        ctx.beginPath();
+        ctx.font = "80px Poiret One";
+        ctx.fillStyle = "red";
+        ctx.textAlign = "center";
+        ctx.fillText("Hard", x_0, y_0);
+        ctx.closePath();
+
+        window.addEventListener("mousedown", ButtonClick, false);
     }
 }
 
@@ -142,7 +226,7 @@ function Resize()
 // Adjusts the size of the canvas to the size of the browser
 // and re-draws the content with the new scale
 // body.onresize handler
-function Adjust_Content()
+function AdjustContent()
 {
     Resize();
     Clear();
@@ -153,6 +237,9 @@ function Adjust_Content()
         {
             case START_SCREEN: 
                 DrawStart();
+                break;
+            case DIFFICULTY_SELECTION_SCREEN:
+                DrawDifficultySelection();
                 break;
 
         }
@@ -180,6 +267,14 @@ function ButtonPressed(x, y)
         var High_x1 = Math.ceil(w / 10) + w + button_w;
         var High_y0 = Math.ceil((h / 10) * 2.5) + h;
         var High_y1 = Math.ceil((h / 10) * 2.5) + h + button_h;
+        var Easy_x0 = Math.ceil(w / 10);
+        var Easy_x1 = Math.ceil(w / 10) + button_w;
+        var Easy_y0 = Math.ceil((h / 10) * 2.5) + h;
+        var Easy_y1 = Math.ceil((h / 10) * 2.5) + h + button_h;
+        var Hard_x0 = Math.ceil(w / 10) + w;
+        var Hard_x1 = Math.ceil(w / 10) + w + button_w;
+        var Hard_y0 = Math.ceil((h / 10) * 2.5) + h;
+        var Hard_y1 = Math.ceil((h / 10) * 2.5) + h + button_h;
 
          // Navigate through different screens
         if (!isGameRunning)
@@ -197,6 +292,19 @@ function ButtonPressed(x, y)
             {
                 return BUTTON_HIGH_SCORE;
             }
+            else if (currentGameScreen == DIFFICULTY_SELECTION_SCREEN &&
+                    (x >= Easy_x0 && x <= Easy_x1 && 
+                     y >= Easy_y0 && y <= Easy_y1))
+            {
+                return BUTTON_DIFFICULTY_EASY;
+            }
+            else if (currentGameScreen == DIFFICULTY_SELECTION_SCREEN &&
+                    (x >= Hard_x0 && x <= Hard_x1 && 
+                     y >= Hard_y0 && y <= Hard_y1))
+            {
+                return BUTTON_DIFFICULTY_HARD;
+            }
+
         }
         /*
         else
@@ -215,7 +323,7 @@ function ButtonPressed(x, y)
 
 // Reads the input and fires the event depending on the 
 // button clicked.
-function Button_Click(e)
+function ButtonClick(e)
 {
     if (canvas != null)
     {
@@ -225,14 +333,17 @@ function Button_Click(e)
         switch(ButtonPressed(x, y))
         {
             case BUTTON_PLAY:
-                // window.removeEventListener('mousedown', Click);
-                // IsGameRunning = true;
-                // Clear();
-                // Start();
-                alert('Hitted button Play');
+                currentGameScreen = DIFFICULTY_SELECTION_SCREEN;
+                AdjustContent();
                 break;
             case BUTTON_HIGH_SCORE:
                 alert('Hitted button Scores');
+                break;
+            case BUTTON_DIFFICULTY_EASY:
+                alert('Hitted easy difficulty');
+                break;
+            case BUTTON_DIFFICULTY_HARD:
+                alert('Hitted hard difficulty');
                 break;
         }
     }
@@ -252,5 +363,5 @@ function Init()
 
     // Adjust size of the game's canvas
     // and draw the game's start screen
-    Adjust_Content();
+    AdjustContent();
 }

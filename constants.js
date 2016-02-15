@@ -37,6 +37,7 @@ var DIFFICULTY_SELECTION_SCREEN = 2;
 var BUTTON_PLAY = 0;
 var BUTTON_HIGH_SCORE = 1;
 var BUTTON_DIFFICULTY_EASY = 2;
+var BUTTON_DIFFICULTY_HARD = 3;
 
 // Linear distance between two points
 // TODO: Move to another file if enough auxiliar
